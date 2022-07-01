@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+</head>
+<body>
+    <img src="bola.png" alt="" style="height: 20; width:20px;">
+    <img src="raqueta.png" alt="">
+    <canvas id="canvas" height="600" width="800" style="background-color: blue;"></canvas>
+    <script>
+        let canvas = document.getElementById("canvas")
+        let context = canvas.getContext("2d")
+        var Ball = new Image();
+        Ball.src = "bola.png"
+        var raqueta = new Image()
+        raqueta.src = 'raqueta.png'
+
+
+        var dx,dy,xi,yi,height,width,ph,pw,r1,r2;
+
+        // Measures Player1
+        ph = 100
+        pw = 20
+
+        // Measures Player2
+        ph2 = 100
+        pw2 = 20
+
+        height = 20
+        width = 20
+        dx = 1
+        dy = 1
+        r1 = 1
+        r2 = 1
+
+
+        radY = Math.floor(Math.random() * 600)
+        
+        class ClassBallIntance{
+            constructor(x,y){
+                this.x = x
+                this.y = y 
+                this.height = height
+                this.width = width
+            }
+
+            draw(context){
+                Ball.onload = function(){
+                    context.drawImage(Ball,this.x,this.y,this.height,this.width)
+                }
+            }
+        }
+
+        class Player{
+            constructor(x,y){
+                this.x = x
+                this.y = y
+                this.ph = ph
+                this.pw = pw
+            }
+            draw(context){
+                raqueta.onload = function()
+                {context.drawImage(raqueta, this.x,this.y,this.ph,this.pw)}
+            }
+        }
+        //Instance ball
+
+        var Ballgame = new ClassBallIntance(295,radY)
+        Ballgame.draw(context)
+
+        // Intance Raqueta
+
+        var Player1 = new Player(80,80)
+        Player1.draw(context)
+
+        // Intance IA
+
+        var PlayerIA = new Player(80,80)
+        PlayerIA.draw(context)
+
+
+        setInterval(MoveBall,1)
+
+        function MoveBall(){
+            Ballgame.x += dx
+            Ballgame.y += dy
+            PlayerIA.y += r2/2
+            if(Ballgame.x==0){
+                Ballgame.x = 295
+                Ballgame.y = radY
+                window.alert("Game Over")
+            }
+            if(Ballgame.x == canvas.width-10){
+                Ballgame.x = 295
+                Ballgame.y = radY
+                window.alert("Gamer Over")
+            }
+            Draw(Ballgame.x,Ballgame.y, Player1.y, PlayerIA.y)
+            limits(Ballgame.x,Ballgame.y)
+            CollisionPlayer1(Player1.x, Player1.y, Ballgame.x, Ballgame.y)
+            CollisionIA(PlayerIA.x,PlayerIA.y, Ballgame.x,Ballgame.y)
+            PlayerIALimits(PlayerIA.y)
+        }    
+        function Draw(posX,posY,r1,r2){
+            context.fillStyle = 'blue'
+            context.fillRect(1, 1, canvas.width, canvas.height);
+            context.drawImage(Ball,posX,posY,height,width)
+            context.drawImage(raqueta,10,r1,pw,ph+80)
+            context.drawImage(raqueta,canvas.width-30,r2,pw,ph+160)
+        }
+
+        function limits(x,y){
+            if(x == canvas.width-10){
+                dx = -1  
+            }
+            if(y == canvas.height-10){
+                dy = -1   
+            }
+            if(y == 0){
+                dy = 1  
+            }
+            if(x == 0){
+                dx = 1 
+            }
+            
+        }
+
+        function PlayerIALimits(xp1){
+            if(xp1 == 0){
+                r2 = 1
+            }
+            if(xp1 == canvas.height-100-160){
+                r2 = -1
+            }
+        }
+
+        function MovePlayer(name){
+               if(name=='w'){
+                    if(Player1.y > 0){Player1.y -= r1*30}
+                }
+                if(name=='s'){
+                    if(Player1.y < canvas.height-100-80)
+                    [Player1.y += r1*30]
+                }
+        }
+
+        function CollisionPlayer1(rX,rY,psX,psY){
+            if(rX-40 == psX){
+                if(psY>rY-ph-80 && psY<rY+ph+80){
+                    dx = 1
+                }
+            }
+        }
+        function CollisionIA(riX,riY,psiX,psiY){
+            if(psiX == riX-160){
+                if(psiY>riY-ph-160 && psiY<riY+ph+160){
+                    dx = -1
+                }
+            }
+        }
+
+        document.addEventListener('keypress', (event) =>{
+            var name = event.key;
+            var code = event.code;
+            MovePlayer(name)
+        }, true);
+    </script>
+</body>
+
+</html>
