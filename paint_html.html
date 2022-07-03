@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint</title>
+</head>
+<body>
+    <canvas id="canvas" height="800" width="800" style="background-color:aliceblue; display:flex;"></canvas>
+    <button id="reset" onclick="reset()">reset</button>
+    <script>
+        const canvas = document.getElementById("canvas")
+        const context = canvas.getContext("2d")
+        var isDrawing=false
+        var width,height,color;
+        width = 5
+        height = 5
+        colorBackground = "aliceblue"
+        colorLine = "red"
+        function drawLine(x,y){
+            context.fillStyle = colorLine
+            context.fillRect(x,y, width, height)
+        }
+
+        function reset(){
+            isDrawing = false;
+            context.fillStyle = color
+            context.fillRect(0,0, canvas.height, canvas.width)
+        }
+
+        window.addEventListener("mousedown", function(e){
+            isDrawing = true
+        })
+        window.addEventListener("mouseup", function(e){
+            isDrawing = false
+        })
+        canvas.addEventListener
+        ('mousemove', e => {
+            if (isDrawing === true) {
+              x = e.offsetX;
+              y = e.offsetY;
+              drawLine(x,y)
+            }
+          });
+        
+    </script>
+</body>
+</html>
