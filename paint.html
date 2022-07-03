@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint</title>
+    <header>
+     <h1>SEBASTIAN YUSTI DEVELOPER</h1>   
+    </header>
+</head>
+<body>
+    <canvas id="canvas" height="800" width="800" style="background-color:aliceblue; display:flex;"></canvas>
+    <button id="reset" onclick="reset()">RESET</button>
+    <button id="reset" onclick="Line()">Line</button>
+    <button id="reset" onclick="Square()">Square</button>
+
+    <input type="color" id="ColorPicker">
+    <input type="number" id="quantity" name="quantity" min="1" max="100" step="5" placeholder="SIZE">
+    <script>
+        const canvas = document.getElementById("canvas")
+        const context = canvas.getContext("2d")
+        const ColorPicking = document.getElementById("ColorPicker")
+        const SizeDrawing = document.getElementById("quantity")
+        var isDrawing=false
+        var width,height,colorBackground,isSquare,isLine, colorLine;
+        isSquare = false
+        isLine = false
+        width = 5
+        height = 5
+        colorBackground = "aliceblue"
+        colorLine = "red"
+        function drawSquare(x,y){
+            if(isSquare){context.fillStyle = colorLine
+            context.fillRect(x,y, width, height)}
+        }
+        function drawLine(x, y) {
+            if(isLine){context.strokeStyle = colorLine;
+            context.lineWidth = width;
+            context.beginPath();
+            context.moveTo(x,y);
+            context.lineTo(x+1,y+1);
+            context.stroke();}
+        }
+
+        function Draw(x,y){
+            drawSquare(x,y)
+            drawLine(x,y)
+        }
+        function reset(){
+            isDrawing = false;
+            context.fillStyle = colorBackground
+            context.fillRect(0,0, canvas.height, canvas.width)
+        }
+        function Square(){
+            isSquare = true
+            isLine = false
+        }
+        function Line(){
+            isLine = true
+            isSquare = false
+        }
+
+        window.addEventListener("mousedown", function(e){
+            isDrawing = true
+        })
+        window.addEventListener("mouseup", function(e){
+            isDrawing = false
+        })
+        canvas.addEventListener
+        ('mousemove', e => {
+            if (isDrawing === true) {
+              x = e.offsetX;
+              y = e.offsetY;
+              Draw(x,y)
+            }
+          });
+        
+        ColorPicking.addEventListener("mousedown", function(e){
+            colorLine = e.target.value;
+            console.log(colorLine)
+        })
+        
+        SizeDrawing.addEventListener("click", function(e){
+            height = width = SizeDrawing.value
+        })
+    </script>
+</body>
+</html>
